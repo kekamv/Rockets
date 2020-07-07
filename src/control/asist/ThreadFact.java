@@ -12,7 +12,6 @@ public class ThreadFact implements ThreadFactory { //will aim to have as many th
 		
 		this.name = name;
 	}
-	
 	@Override
 	public Thread newThread(Runnable r) {
 		

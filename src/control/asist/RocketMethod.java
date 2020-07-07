@@ -71,7 +71,6 @@ public class RocketMethod implements Runnable {
 		}
 			
 			 r.counterForLaunch();
-
 	}
 	}
 	

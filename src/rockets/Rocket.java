@@ -96,5 +96,7 @@ public class Rocket {
 			}
 		} System.out.println("Launching");
 			System.out.println();
+			
 	}
+	
 }

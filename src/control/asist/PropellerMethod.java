@@ -57,7 +57,6 @@ public class PropellerMethod implements Runnable{
 			
 			System.out.println("Response from "+Thread.currentThread().getName()+" : target power "+targetPower+ " for Propeller " +p.getCode()+ " reached");
 		
-			
 		
 		}
 		return p.getCurrentPower();

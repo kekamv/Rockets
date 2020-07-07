@@ -30,8 +30,6 @@ public class Propeller {
 	private String code;
 	protected double peakPower;
 	protected double currentPower;
-	
-
-	
+		
 }
 	

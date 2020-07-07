@@ -6,7 +6,6 @@ import java.util.function.ToDoubleFunction;
 
 public class RocketsBuilder {
 	
-	
 	public static void main (String args) {	
 		//rocket1.propellantMass =  ComponentBuilder.forEach(propellerRocket1, (Propeller t) -> t.getPeakPower(), 1.3);		
 	}
