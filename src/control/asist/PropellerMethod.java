@@ -1,10 +1,11 @@
 package control.asist;
 
+import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
 import rockets.Propeller;
 
-public class PropellerMethod implements Runnable{
+public class PropellerMethod implements Callable<Double>{
 	
 	private Propeller propeller;
 	
@@ -16,7 +17,8 @@ public class PropellerMethod implements Runnable{
 		this.targetPower = targetPower;
 	}
 
-	public double adaptCurrentPowerPropeller(Propeller p, double targetPower) { // change current power (+1) or (-1) until reaching target power
+	public double adaptCurrentPowerPropeller(Propeller p, double targetPower) { 
+		// change current power (+1) or (-1) until reaching target power
 		
 		if (p.getCurrentPower()< targetPower) { //increase current power in 1 
 		
@@ -25,9 +27,11 @@ public class PropellerMethod implements Runnable{
 					p.setCurrentPower(1);
 					TimeUnit.MILLISECONDS.sleep(200);
 					
-					if(targetPower-p.getCurrentPower()==10) { // 5 power units/second (sleep 200 ms), therefore 10 to 2 seconds to target
+					if(targetPower-p.getCurrentPower()==10) { 
+					// 5 power units/second (sleep 200 ms), therefore 10 to 2 seconds to target
 						
-						System.out.println("Response from "+Thread.currentThread().getName()+ " 2 seconds to target power");
+						System.out.println("Response from "+Thread.currentThread().getName()
+								+ " 2 seconds to target power");
 					}
 					
 				} catch (InterruptedException e) {
@@ -43,9 +47,11 @@ public class PropellerMethod implements Runnable{
 					p.setCurrentPower(-1);
 					TimeUnit.MILLISECONDS.sleep(200);
 					
-					if(-targetPower+p.getCurrentPower()==10) { // 5 power units/second (sleep 200 ms), therefore 10 to 2 seconds to target
+					if(-targetPower+p.getCurrentPower()==10) { 
+						// 5 power units/second (sleep 200 ms), therefore 10 to 2 seconds to target
 						
-						System.out.println("Response from "+Thread.currentThread().getName()+ " 2 seconds to target power");
+						System.out.println("Response from "+Thread.currentThread().getName()
+								+ " 2 seconds to target power");
 					}
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
@@ -55,7 +61,8 @@ public class PropellerMethod implements Runnable{
 		
 		if (p.getCurrentPower()==targetPower) { //produce msg target power reached
 			
-			System.out.println("Response from "+Thread.currentThread().getName()+" : target power "+targetPower+ " for Propeller " +p.getCode()+ " reached");
+			System.out.println("Response from "+Thread.currentThread().getName()
+					+" : target power "+targetPower+ " for Propeller " +p.getCode()+ " reached");
 		
 		
 		}
@@ -63,8 +70,11 @@ public class PropellerMethod implements Runnable{
 			
 	}
 	
-	public void run() {
+	@Override
+	public Double call(){
 		
 		adaptCurrentPowerPropeller(propeller, targetPower);
+		return Double.valueOf(propeller.getCurrentPower());
 	}
+
 }

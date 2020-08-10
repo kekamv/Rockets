@@ -10,7 +10,7 @@ import rockets.RocketsBuilder;
 public class RocketsApp {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+
 			
 RocketMethod launch = new RocketMethod();
 

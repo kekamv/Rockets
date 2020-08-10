@@ -1,12 +1,11 @@
 package control.asist;
 
+import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 import rockets.*;
 
@@ -14,32 +13,42 @@ public class RocketMethod implements Runnable {
 	
 	volatile double totalPower=0;	
 	
-	public synchronized double propulsionSystem(Rocket r, double peakPercent) throws InterruptedException {
+	public void propulsionSystem(Rocket r, double peakPercent) throws InterruptedException {
 		
-		ExecutorService executor = Executors.newFixedThreadPool(r.getPropellers().length, new ThreadFact(r.getCode()));
+		ExecutorService executor = Executors.newFixedThreadPool(
+				r.getPropellers().length, new ThreadFact(r.getCode()));
 		
 		
+		ArrayList<Future<Double>> targetPowerTotal=new ArrayList<Future<Double>>();
 		for(Propeller p:r.getPropellers()) {
 			
 			double targetPower= p.getPeakPower()*peakPercent;
 			
 			// this row adapt the current power of the propeller to the target power		
 			
-			executor.execute(new PropellerMethod(p, targetPower)); 
+			targetPowerTotal.add(executor.submit(new PropellerMethod(p, targetPower))); 
 			
 		}
+		
+			try { 
+				for (Future<Double> fd : targetPowerTotal)
+				totalPower+=fd.get();
+				
+				
+			} catch (InterruptedException ie) {
+				System.out.println(ie);
+				return;
+				
+			} catch (ExecutionException ee) {
+				System.out.println (ee);
+				
+			} finally {
 
-		totalPower = r.getRocketCurrentPower();
-		
-		executor.shutdown();
-		
-		return totalPower;
+				executor.shutdown();
+			}
+		System.out.println("Total power reached by rocket "+ r.getCode()+ " : " +totalPower);
 	}
 
-	public double getTotalPower(Rocket r) {
-		
-		return totalPower;
-	}
 	
 	public void start() {
 		run();
@@ -52,21 +61,20 @@ public class RocketMethod implements Runnable {
 		for(Rocket r:launchSystem) r.rocketDescription();
 			
 		for(Rocket r:launchSystem)		{
-		try {
-		lock.lock();
 
+		try {
 			propulsionSystem(r, peakPercent);
 
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 	
 		}
-		lock.unlock();
+	
 		
 		try {
 			TimeUnit.MILLISECONDS.sleep(2000);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 			
@@ -74,7 +82,6 @@ public class RocketMethod implements Runnable {
 	}
 	}
 	
-	private Lock lock = new ReentrantLock();
 
 	
 		Propeller r1p1 = new Propeller("LDSFJA32.1", 10);
