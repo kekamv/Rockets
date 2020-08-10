@@ -5,7 +5,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 
 import rockets.*;
 
@@ -69,12 +68,12 @@ public class RocketMethod implements Runnable {
 
 	}
 	
-	
+
 		Propeller r1p1 = new Propeller("LDSFJA32.1", 10);
 		Propeller r1p2 = new Propeller("LDSFJA32.2", 30);
 		Propeller r1p3 = new Propeller("LDSFJA32.3", 80);
 		
-		Propeller[] propellerRocket1 = {r1p1, r1p2, r1p3};
+		
 		
 		Propeller r2p1 = new Propeller("32WESSDS.1", 30);
 		Propeller r2p2 = new Propeller("32WESSDS.2", 40);
@@ -84,10 +83,12 @@ public class RocketMethod implements Runnable {
 		Propeller r2p6 = new Propeller("32WESSDS.6", 10);
 		
 		Propeller[] propellerRocket2 = {r2p1, r2p2, r2p3, r2p4, r2p5, r2p6};
+		Propeller[] propellerRocket1 = {r1p1, r1p2, r1p3};
 		
 		Rocket rocket1 = new Rocket("LDSFJA32", 20, propellerRocket1); 
 		
 		Rocket rocket2 = new Rocket("32WESSDS", 30, propellerRocket2); 
 		
 		Rocket[] launchSystem = {rocket1, rocket2};	
+
 }
