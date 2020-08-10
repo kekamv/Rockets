@@ -12,10 +12,9 @@ public class RocketsApp {
 	public static void main(String[] args) {
 
 			
-RocketMethod launch = new RocketMethod();
 
-Thread t= new Thread(launch);
-launch.start();
+Thread t= new Thread(new RocketMethod());
+t.start();
 		
 
 	}

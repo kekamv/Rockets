@@ -49,10 +49,6 @@ public class RocketMethod implements Runnable {
 		System.out.println("Total power reached by rocket "+ r.getCode()+ " : " +totalPower);
 	}
 
-	
-	public void start() {
-		run();
-	}
 		
 	public void run() {
 		
@@ -60,29 +56,19 @@ public class RocketMethod implements Runnable {
 		
 		for(Rocket r:launchSystem) r.rocketDescription();
 			
-		for(Rocket r:launchSystem)		{
 
 		try {
+			for(Rocket r:launchSystem) {
 			propulsionSystem(r, peakPercent);
-
+			r.counterForLaunch();
+			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 	
 		}
-	
-		
-		try {
-			TimeUnit.MILLISECONDS.sleep(2000);
-		} catch (InterruptedException e) {
-			
-			e.printStackTrace();
-		}
-			
-			 r.counterForLaunch();
-	}
-	}
-	
 
+	}
+	
 	
 		Propeller r1p1 = new Propeller("LDSFJA32.1", 10);
 		Propeller r1p2 = new Propeller("LDSFJA32.2", 30);
